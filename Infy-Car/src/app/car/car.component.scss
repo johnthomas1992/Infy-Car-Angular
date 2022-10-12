@@ -1,0 +1,36 @@
+.container-fluid {
+    margin-top: 3%;
+}
+.car-actions {
+    box-sizing: content-box;
+
+    button {
+        margin: 2%;
+        float: right;
+    }
+}
+
+.spinner-custom {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000000b3;
+}
+
+tbody {
+    th {
+        display: flex;
+
+        input {
+            margin-right: 2%;
+        }
+    }
+}
+
+.no-data {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
