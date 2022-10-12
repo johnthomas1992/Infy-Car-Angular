@@ -28,6 +28,9 @@ export class CarComponent implements OnInit {
    this.fetchCars();
   }
 
+  /**
+   * Function to fetch available car data from DB
+   */
   fetchCars(): void {
     this.loader = true;
     this.apiService.fetchCars().subscribe((cars: Array<car>) => {
@@ -43,9 +46,19 @@ export class CarComponent implements OnInit {
     return this.userForm.controls;
   }
 
+/**
+ * Function to track html for-loop
+ * @param index 
+ * @param item 
+ * @returns 
+ */
   trackByFn(index: number, item: car) {
     return item;
   }
+
+  /**
+   * Function to add new car details
+   */
   addCar(): void {
     if (this.userForm.valid) {
 
@@ -75,6 +88,13 @@ export class CarComponent implements OnInit {
     }
   }
 
+  /**
+   * Function to detect checkbox selection
+   * @param number 
+   * @param name 
+   * @param index 
+   * @param event 
+   */
   onChange(number: string, name: string, index: number, event: Event) {
     this.isChecked = (<HTMLInputElement>event.target).checked
     if (this.isChecked) {
@@ -84,6 +104,9 @@ export class CarComponent implements OnInit {
     }
   }
 
+  /**
+   * Function to remove car details from DB
+   */
   deleteCar() {
     this.loader = true;
     if (this.isChecked) {
@@ -105,6 +128,10 @@ export class CarComponent implements OnInit {
     }
   }
 
+  /**
+   * Custom validator for validating Number plate format
+   * @returns 
+   */
   validateCarNumber(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;

@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { CarComponent } from './car.component';
 import { ApiService } from '../Services/api.service';
 import { car } from '../Interface/interface';
@@ -15,7 +13,6 @@ class MockCarServiceStub {
   }
   addCar(number: string, name: string): Observable<any> {
     let error$ = of({status: 400, body: {error:'Error: ConditionalCheckFailedException: The conditional request failed'}}) 
-    //of('Error: ConditionalCheckFailedException: The conditional request failed');
     return error$ ;
   }
 }
