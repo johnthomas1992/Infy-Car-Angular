@@ -1,8 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { log } from 'console';
-import { car, carToDelete } from './Interface/interface';
-import { ApiService } from './Services/api.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +7,5 @@ import { ApiService } from './Services/api.service';
 })
 export class AppComponent {
   title = 'Infy-Car';
-  
+
 }

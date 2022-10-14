@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { car, carToDelete } from '../Interface/interface';
 import { ApiService } from '../Services/api.service';
+import * as carActions from "../car/Store/cars.actions";
 
 @Component({
   selector: 'app-car',
@@ -21,11 +23,14 @@ export class CarComponent implements OnInit {
   errorMessage = '';
   constructor(
     private apiService: ApiService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private store: Store<{ cars: { cars: Array<car> } }>
+  ) { }
 
 
   ngOnInit(): void {
-   this.fetchCars();
+    this.store.select('cars').subscribe(item => this.cars = item.cars);
+    this.fetchCars();
   }
 
   /**
@@ -34,7 +39,7 @@ export class CarComponent implements OnInit {
   fetchCars(): void {
     this.loader = true;
     this.apiService.fetchCars().subscribe((cars: Array<car>) => {
-      this.cars = cars;
+      this.store.dispatch(new carActions.FetchCars(cars));
       this.loader = false;
     })
     this.userForm = this.formBuilder.group({
@@ -42,16 +47,17 @@ export class CarComponent implements OnInit {
       name: ['', [Validators.required]]
     })
   }
+
   get getControl() {
     return this.userForm.controls;
   }
 
-/**
- * Function to track html for-loop
- * @param index 
- * @param item 
- * @returns 
- */
+  /**
+   * Function to track html for-loop
+   * @param index 
+   * @param item 
+   * @returns 
+   */
   trackByFn(index: number, item: car) {
     return item;
   }
@@ -63,15 +69,15 @@ export class CarComponent implements OnInit {
     if (this.userForm.valid) {
 
       this.loader = true;
-      let car: car = {
+      let carItem: car = {
         Number: "",
         Name: ""
       };
-      car.Number = this.userForm.value.number;
-      car.Name = this.userForm.value.name;
-      this.apiService.addCar(car.Number, car.Name).subscribe((item: any) => {
+      carItem.Number = this.userForm.value.number;
+      carItem.Name = this.userForm.value.name;
+      this.apiService.addCar(carItem.Number, carItem.Name).subscribe((item: any) => {
         this.loader = false;
-        item.status === 200 ? this.cars.push(car) : alert("API call failed");
+        item.status === 200 ? this.store.dispatch(new carActions.AddCar(carItem)) : alert("API call failed");
         this.userForm.reset();
       }, (error) => {
         console.log(error);
@@ -80,7 +86,7 @@ export class CarComponent implements OnInit {
         if (error.error === "Error: ConditionalCheckFailedException: The conditional request failed") {
           this.errorMessage = "Number already exist";
           alert("Number already exist");
-          
+
         } else {
           this.errorMessage = "Bad Gateway";
         }
@@ -113,7 +119,7 @@ export class CarComponent implements OnInit {
 
       this.apiService.deleteCar(this.carToDelete.Number, this.carToDelete.Name).subscribe((item: any) => {
         this.loader = false;
-        item.status === 200 ? this.cars.splice(this.carToDelete.Id, 1) : alert("API call failed");
+        item.status === 200 ? this.store.dispatch(new carActions.DeleteCar(this.carToDelete.Id)) : alert("API call failed");
       }, (error) => {
         this.loader = false;
         if (error.error === "Error: ConditionalCheckFailedException: The conditional request failed") {
