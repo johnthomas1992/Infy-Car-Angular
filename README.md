@@ -9,6 +9,7 @@ Technologies used are Angular V13 and AWS(for backend data)
 >FrondEnd
 UI is displayed with data retrieved from api call. Data consists of car details[car number plate and car owner name].
 Provision to List,Add and Delete data.
+State management is implemented using NgRx.
 
 >Backend
 Car details data is stored in AWS DynamoDB service.
