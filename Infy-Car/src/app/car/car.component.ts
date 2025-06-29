@@ -29,7 +29,7 @@ export class CarComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.store.select('cars').subscribe(item => this.cars = item.cars);
+   // this.store.select('cars').subscribe(item => this.cars = item.cars);
    // this.fetchCars();
   }
 
