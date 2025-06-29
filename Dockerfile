@@ -20,7 +20,7 @@ RUN npm run build
 FROM nginx:1.21.6-alpine AS runtime
 
 # Copy built application from the build stage to Nginx's html directory
-COPY --from=build /app/dist/infy-car/usr/share/nginx/html
+COPY --from=build /app/dist/infy-car /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
